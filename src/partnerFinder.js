@@ -1,6 +1,7 @@
 function PartnerFinder() {
   this.yourLatitude = null;
   this.yourLongitude = null;
+  this.partners = [];
 }
 
 PartnerFinder.prototype.setYourCoordinates = function(coordinates) {
