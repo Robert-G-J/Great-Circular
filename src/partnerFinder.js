@@ -5,10 +5,10 @@ function PartnerFinder() {
 }
 
 PartnerFinder.prototype.setYourCoordinates = function(coordinates) {
-  var radianCoords = coordinates.map(function(coordinate) {
-    coordinate * (Math.PI/2)
+  var results  = coordinates.map(function(coordinate) {
+    return (coordinate * (Math.PI/180));
   });
-  return radianCoords; 
+  return results; 
 }
 
 PartnerFinder.prototype.getClosestPartner = function(range) {
