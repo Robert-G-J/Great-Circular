@@ -12,16 +12,16 @@ describe("The ParterFinder", function() {
     //var lat = 52.0629009;
     //var lon = -1.3397750000000315;  
     var expected =  [0.9086690388423, -0.023383484985849571636];
-    var radianArray = pf.convertToRadians([latBanbury, lonBanbury]);
+    var radianArray = pf._convertToRadians([latBanbury, lonBanbury]);
     radianArray.every((x, i) => expect(x).toBeCloseTo(expected[i]));
   });
 
   it("calculates the orthodromic distance", function() {
     var latLondon = 51.515419;
     var lonLondon = -0.141099;
-    var radsLondon = pf.convertToRadians([latLondon, lonLondon]);
-    var radsBanbury = pf.convertToRadians([latBanbury, lonBanbury]);
-    var result = pf.orthodromicDistance(radsLondon[0], radsLondon[1], radsBanbury[0], radsBanbury[1]);
+    var radsLondon = pf._convertToRadians([latLondon, lonLondon]);
+    var radsBanbury = pf._convertToRadians([latBanbury, lonBanbury]);
+    var result = pf._orthodromicDistance(radsLondon[0], radsLondon[1], radsBanbury[0], radsBanbury[1]);
     expect(result).toBeCloseTo(102.48330298105786);
   });
 
@@ -34,15 +34,28 @@ describe("The ParterFinder", function() {
 
   it("gets your closest partner", function() {
     var partner0 = {
-      name: "Banbury",
-      coordinates: "52.0629009,-1.3397750000000315"
+      organization: "Spring Development",
+      offices: [
+        {
+          location: "Banbury, Oxfordshire",
+          address: "Banbury, Oxfordshire",
+          coordinates: "52.0629009,-1.3397750000000315"
+        }
+      ]
     }
     var partner1 = {
-      name: "Mexico City",
-      coordinates: "19.4361004,-99.18870959999998"
+      organization: "Talent Lab",
+      offices: [
+        {
+          location: "Mexico City",
+          address: "Mexico City",
+          coordinates: "19.4361004,-99.18870959999998"
+        }
+      ]
     }
     pf.partners.push(partner0);
     pf.partners.push(partner1);
-    expect(pf.getClosestPartner(100)).toEqual([partner]);
+    pf.setYourCoordinates([51.515419, -0.141099]);
+    expect(pf.getClosestPartner(100)).not.toEqual([partner0]);
   });
 });
