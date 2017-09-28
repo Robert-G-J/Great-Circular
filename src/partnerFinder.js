@@ -2,8 +2,6 @@ function PartnerFinder() {
   this.yourLatitude = null;
   this.yourLongitude = null;
   this.partners = [];
-
-
 }
 
 PartnerFinder.prototype._convertToRadians = function(array) {
@@ -28,26 +26,18 @@ PartnerFinder.prototype.setYourCoordinates = function(coordinates) {
 }
 
 PartnerFinder.prototype.getClosestPartner = function(range) {
-  // walks the tree of json picks id and location
-  // calls json with promise
-  var getPartners = function(obj) {
-    return obj.offices[0].coordinates !== "";
-  }
-
-  var livePartners = this.partners.filter(getPartners);
-  
   var thisPF = this; 
   
-  livePartners.map(function(partner) {
-    var degreeCoordsAsStrings = partner.offices[0].coordinates;
-    var degreeCoordsAsFloats = degreeCoordsAsStrings.split(/,/).map(parseFloat);
-    var radianCoords = thisPF._convertToRadians(degreeCoordsAsFloats);
-    var distance = thisPF._orthodromicDistance(thisPF.yourLatitude, thisPF.yourLongitude, radianCoords[0], radianCoords[1]); 
-    console.log(distance);
-    if(distance >= range) 
-      console.log(partner);
-      return partner;
-  })
+  return this.partners.filter(function(partner) {
+    return partner.offices.filter(function(office) {
+      var degreeCoordsAsStrings = office.coordinates;
+      var degreeCoordsAsFloats = degreeCoordsAsStrings.split(/,/).map(parseFloat);
+      var radianCoords = thisPF._convertToRadians(degreeCoordsAsFloats);
+      var distanceToOffice = thisPF._orthodromicDistance(thisPF.yourLatitude, thisPF.yourLongitude, radianCoords[0], radianCoords[1]); 
+      if (distanceToOffice <= range)
+        return partner;
+    });
+  });
 }
 
 module.exports.PartnerFinder = PartnerFinder;
