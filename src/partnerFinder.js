@@ -5,10 +5,10 @@ function PartnerFinder() {
 }
 
 PartnerFinder.prototype._convertToRadians = function(array) {
-  var results = array.map(function(coordinate) {
+  var radianCoords = array.map(function(coordinate) {
     return ( coordinate * ( Math.PI/180 )  ); 
   });
-  return results;
+  return radianCoords;
 };
 
 PartnerFinder.prototype._orthodromicDistance = function(lat1, long1, lat2, long2) {
@@ -17,12 +17,10 @@ PartnerFinder.prototype._orthodromicDistance = function(lat1, long1, lat2, long2
 }
 
 PartnerFinder.prototype.setYourCoordinates = function(coordinates) {
-  var results  = coordinates.map(function(coordinate) {
-    return (coordinate * (Math.PI/180));
-  });
-  this.yourLatitude = results[0];
-  this.yourLongitude = results[1];
-  return results; 
+  var radianCoords  = this._convertToRadians(coordinates);
+  this.yourLatitude = radianCoords[0];
+  this.yourLongitude = radianCoords[1];
+  return radianCoords; 
 }
 
 PartnerFinder.prototype.getClosestPartner = function(range) {
@@ -46,5 +44,4 @@ PartnerFinder.prototype.getClosestPartner = function(range) {
 
   return this.partners.filter(isClosePartner);
 }
-
 module.exports.PartnerFinder = PartnerFinder;
