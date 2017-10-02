@@ -53,9 +53,29 @@ describe("The ParterFinder", function() {
         }
       ]
     }
+    
+    var partner2 = {
+      organization: "Blue Square 360",
+      offices: [
+        {
+          location: "Singapore",
+          address: "Ocean Financial Centre, Level 40, 10 Collyer Quay, Singapore, 049315",
+          coordinates: "1.28304,103.85199319999992"
+        },
+        {
+          location: "London, UK",
+          address: "St Saviours Wharf, London SE1 2BE",
+          coordinates: "51.5014767,-0.0713608999999451"
+        }
+      ]
+    }
     pf.partners.push(partner0);
     pf.partners.push(partner1);
+    pf.partners.push(partner2);
     pf.setYourCoordinates([51.515419, -0.141099]);
-    expect(pf.getClosestPartner(100)).not.toEqual([partner0]);
+    var closestPartners = pf.getClosestPartner(100);
+    expect(closestPartners).not.toContain(partner0);
+    expect(closestPartners).not.toContain(partner1);
+    expect(closestPartners).toContain(partner2);
   });
 });

@@ -28,16 +28,23 @@ PartnerFinder.prototype.setYourCoordinates = function(coordinates) {
 PartnerFinder.prototype.getClosestPartner = function(range) {
   var thisPF = this; 
   
-  return this.partners.filter(function(partner) {
-    return partner.offices.filter(function(office) {
-      var degreeCoordsAsStrings = office.coordinates;
-      var degreeCoordsAsFloats = degreeCoordsAsStrings.split(/,/).map(parseFloat);
-      var radianCoords = thisPF._convertToRadians(degreeCoordsAsFloats);
-      var distanceToOffice = thisPF._orthodromicDistance(thisPF.yourLatitude, thisPF.yourLongitude, radianCoords[0], radianCoords[1]); 
-      if (distanceToOffice <= range)
-        return partner;
-    });
-  });
+  function isOfficeinRange (object) {
+    var degreeCoordsAsStrings = object.coordinates;
+    var degreeCoordsAsFloats = degreeCoordsAsStrings.split(/,/).map(parseFloat);
+    var radianCoords = thisPF._convertToRadians(degreeCoordsAsFloats);
+    var distanceToOffice = thisPF._orthodromicDistance(thisPF.yourLatitude, thisPF.yourLongitude, radianCoords[0], radianCoords[1]); 
+    return distanceToOffice <= range;
+  }
+
+  function isClosePartner(array) {
+   var validOffices = array.offices.filter(isOfficeinRange);
+   if (typeof validOffices != "undefined" && validOffices != null && validOffices.length > 0 )
+     return true;
+   else
+    return false;
+  }
+
+  return this.partners.filter(isClosePartner);
 }
 
 module.exports.PartnerFinder = PartnerFinder;
