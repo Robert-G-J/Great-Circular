@@ -47,20 +47,20 @@ The reference in the [specification](#Specification) is to a list of partners in
 
 I broke the problem into a series of smaller challenges:
 1. Calculate the great circle distance between two points, by
-  1. Converting degree coordinates to radians,
-  2. Using the Great Circle Theorem to find the distance in m,
-  3. Before converting to km.
+  - Converting degree coordinates to radians,
+  - Using the Great Circle Theorem to find the distance in m,
+  - Before converting to km.
 
 2. Trapping the user's coordinates and the range to search
-  1. Converting the user's coordinates to radians
+  - Converting the user's coordinates to radians
 
 3. Comparing user coordinates to mocked Partner Coordinates
-  1. If the partner is within range, return it
-  2. Return the partners within range
+  - If the partner is within range, return it
+  - Return the partners within range
 
 4. Grab the partners JSON from the supplied endpoint
-  1. By using an asynchronous request (as a Promise)
-  2. Tie to the location comparator
+  - By using an asynchronous request (as a Promise)
+  - Tie to the location comparator
 
 This suggested two clear constructors: a `PartnerFinder` and a `PartnerGetter`. The `PartnerFinder` would have the responsibility of calculating whether a partner object in JSON format was within a supplied range and return those that are. The `PartnerGetter` would contain the AJAX request to the endpoint that would grab the JSON ready for manipulation.
 
